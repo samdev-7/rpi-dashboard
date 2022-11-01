@@ -1,5 +1,15 @@
 <script>
-    import {time, apm} from '$lib/time';
+    let time, apm;
+
+    function getTime() {
+        let date = new Date();
+        time = (date.getHours() >= 12 ? date.getHours() - 12 : date.getHours())  + ":" + (date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes());
+        apm = date.getHours() >= 12 ? "PM" : "AM";
+    }
+
+    setInterval(getTime, 1000);
+
+    getTime();
 </script>
 
 <div class="text-center my-20">
