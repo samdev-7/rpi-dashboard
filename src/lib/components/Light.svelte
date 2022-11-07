@@ -9,20 +9,25 @@
     export let iconOff = "https://api.iconify.design/material-symbols:light-outline-rounded.svg?color=%23ffffff";
     export let iconOn = "https://api.iconify.design/material-symbols:light-rounded.svg?color=%23fde68a";
     export let iconError = "https://api.iconify.design/material-symbols:light-outline-rounded.svg?color=%23f87171";
+    export let iconLoading = "https://api.iconify.design/material-symbols:downloading-rounded.svg?color=%23ffffff";
 
-    let state = -1; // 0 = off, 1 = on, -1 = error
-    let bg_color = "bg-red-400/25";
-    let text_color = "text-red-100";
+    let state = -2; // 0 = off, 1 = on, -1 = error, -2 = loading
+    let bg_color = "";
+    let text_color = "text-white";
+    let status_text = "Loading..."
 
     $: if (state == 0) {
         bg_color = "bg-gray-400/25";
         text_color = "text-gray-100";
+        status_text = "Turned Off";
     } else if (state == 1) {
         bg_color = "bg-yellow-400/25";
         text_color = "text-yellow-100";
-    } else {
+        status_text = "Turned On";
+    } else if (state == -1) {
         bg_color = "bg-red-400/25";
         text_color = "text-red-100";
+        status_text = "Error, click to refresh.";
     }
 
     async function getState() {
@@ -99,17 +104,20 @@
 </script>
 
 <button type="button" on:click={handleClick}>
-    <div class="rounded-2xl p-6 flex {bg_color}">
-        <div>
-            <h3 class="font-medium text-xl {text_color}">{name}</h3>
+    <div class="rounded-2xl p-10 flex {bg_color}">
+        <div class="text-left {text_color}">
+            <h3 class="font-medium text-3xl">{name}</h3>
+            <p class="text-xl">{status_text}</p>
         </div>
         <div class="ml-auto">
             {#if state == 1}
-                <img src={iconOn} alt="{name} On" class="w-12 h-12" />
+                <img src={iconOn} alt="{name} On" class="w-16 h-16" />
             {:else if state == 0}
-                <img src={iconOff} alt="{name} Off" class="w-12 h-12" />
+                <img src={iconOff} alt="{name} Off" class="w-16 h-16" />
+            {:else if state == -2}
+                <img src={iconLoading} alt="{name} Loading" class="w-16 h-16" />
             {:else}
-                <img src="{iconError}" alt="{name} Error" class="w-12 h-12" />
+                <img src="{iconError}" alt="{name} Error" class="w-16 h-16" />
             {/if}
         </div>  
     </div>

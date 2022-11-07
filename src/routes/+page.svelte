@@ -18,7 +18,7 @@
     <h1 class="text-9xl font-semibold tracking-wide">{time}<span class="text-5xl text-blue-300">{apm}</span></h1>
 </div>
 
-<div class="grid grid-cols-2 gap-6 px-10">
+<div class="grid grid-cols-1 gap-6 px-10">
     <Light name="Workspace Main" />
     <Light name="Workspace Secondary" />
 </div>
