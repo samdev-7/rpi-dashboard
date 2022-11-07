@@ -76,6 +76,12 @@
 		getState().then((result) => {
             state = result;
         });
+
+        setInterval(() => {
+            getState().then((result) => {
+                state = result;
+            });
+        }, 60000);
 	});
 
     function handleClick() {
