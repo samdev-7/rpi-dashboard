@@ -103,8 +103,6 @@
             setState(1).then((result) => {
                 state = result;
             });
-        } else if (state == -2) {
-            // Nothing
         } else {
             // Error
 
