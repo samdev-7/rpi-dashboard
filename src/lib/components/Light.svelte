@@ -24,7 +24,11 @@
         bg_color = "bg-yellow-400/25";
         text_color = "text-yellow-100";
         status_text = "Turned On";
-    } else if (state == -1) {
+    } else if (state == -2) {
+        bg_color = "";
+        text_color = "text-gray-100";
+        status_text = "Loading..."
+    } else {
         bg_color = "bg-red-400/25";
         text_color = "text-red-100";
         status_text = "Error, click to refresh.";
@@ -50,6 +54,8 @@
     }
 
     async function setState(s) {
+        state = -2;
+
         let response = await fetch("api/light", {
             method: 'POST',
             body: JSON.stringify({
@@ -97,6 +103,8 @@
             setState(1).then((result) => {
                 state = result;
             });
+        } else if (state == -2) {
+            // Nothing
         } else {
             // Error
 
