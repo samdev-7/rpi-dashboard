@@ -25,7 +25,6 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"cheerio": "^1.0.0-rc.12",
-		"google-assistant": "^0.7.0"
+		"cheerio": "^1.0.0-rc.12"
 	}
 }

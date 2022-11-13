@@ -2,45 +2,72 @@ import * as light from '$lib/api/light.js';
 import { json } from '@sveltejs/kit';
 
 export async function GET({ url }) {
-    let name = url.searchParams.get("name");
+    let id = url.searchParams.get("id");
     
-    if (name == null) {
+    if (id == null) {
         return json({
             error: true,
-            message: "No name provided."
+            message: "No id provided."
         })
     }
 
-    let resp = await light.getState(name);
+    let state;
+
+    try {
+        state = await light.getState(id);
+    } catch (e) {
+        // Return error
+        return json({
+            error: true,
+            message: e.message,
+            id: id,
+            state: null
+        })
+    } 
 
     return json({
         error: false,
-        name: name,
-        state: resp
+        id: id,
+        state: state
     })
 }
 
 export async function POST({ request }) {
     let body = await request.json();
 
-    if (body.name == null) {
+    if (body.id == null) {
         return json({
             error: true,
-            message: "No name provided."
+            message: "No id provided."
         })
     }
 
-    if (!body.state == null) {
+    if (body.state == null) {
         return json({
             error: true,
             message: "No state provided."
         });
     }
 
-    let resp = await light.setState(body.name, body.state);
+    if (body.domain == null) {
+        body.domain = "light";
+    }
+
+    let resp;
+
+    try {
+        resp = await light.setState(body.id, body.state, body.domain);
+    } catch (e) {
+        // Return error
+        return json({
+            error: true,
+            message: e.message,
+            id: body.id,
+        })
+    } 
 
     return json({
-        error: !resp,
-        name: body.name
+        error: false,
+        id: body.id
     })
 }

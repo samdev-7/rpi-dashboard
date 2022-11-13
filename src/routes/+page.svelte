@@ -19,6 +19,6 @@
 </div>
 
 <div class="grid grid-cols-1 gap-6 px-10">
-    <Light name="Workspace Main" />
-    <Light name="Workspace Secondary" />
+    <Light name="Workspace Main" entity_id="light.workspace_main" />
+    <Light name="Workspace Secondary" entity_id="switch.workspace_secondary" domain="switch" />
 </div>

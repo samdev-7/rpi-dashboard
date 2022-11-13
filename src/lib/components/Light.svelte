@@ -4,17 +4,15 @@
     import { onMount } from "svelte";
 
     export let name = "Light";
-    export let assistant_name = name; 
+    export let entity_id = name; 
+    export let domain = "light";
 
     export let iconOff = "https://api.iconify.design/material-symbols:light-outline-rounded.svg?color=%23ffffff";
     export let iconOn = "https://api.iconify.design/material-symbols:light-rounded.svg?color=%23fde68a";
     export let iconError = "https://api.iconify.design/material-symbols:light-outline-rounded.svg?color=%23f87171";
-    export let iconLoading = "https://api.iconify.design/material-symbols:downloading-rounded.svg?color=%23ffffff";
 
-    let state = -2; // 0 = off, 1 = on, -1 = error, -2 = loading
-    let bg_color = "";
-    let text_color = "text-white";
-    let status_text = "Loading..."
+    let state = -1; // 0 = off, 1 = on, -1 = error
+    let bg_color, text_color, status_text;
 
     $: if (state == 0) {
         bg_color = "bg-gray-400/25";
@@ -24,18 +22,14 @@
         bg_color = "bg-yellow-400/25";
         text_color = "text-yellow-100";
         status_text = "Turned On";
-    } else if (state == -2) {
-        bg_color = "";
-        text_color = "text-gray-100";
-        status_text = "Loading..."
-    } else {
+    }  else {
         bg_color = "bg-red-400/25";
         text_color = "text-red-100";
         status_text = "Error, click to refresh.";
     }
 
     async function getState() {
-        let response = await fetch("api/light?name=" + encodeURIComponent(assistant_name));
+        let response = await fetch("api/light?id=" + encodeURIComponent(entity_id));
         if (!response.ok) {
             return -1;
         }
@@ -46,21 +40,22 @@
             return -1;
         }
 
-        if (data.state == true) {
+        if (data.state == "on") {
             return 1;
-        } else {
+        } else if (data.state == "off") {
             return 0;
+        } else {
+            return -1;
         }
     }
 
     async function setState(s) {
-        state = -2;
-
         let response = await fetch("api/light", {
             method: 'POST',
             body: JSON.stringify({
-                name: assistant_name,
-                state: s
+                id: entity_id,
+                state: s,
+                domain: domain
             })
         });
 
@@ -71,7 +66,7 @@
         let data = await response.json();
 
         if (data.error == true) {
-            return -1;
+            return null;
         }
 
         return s;
@@ -91,19 +86,32 @@
 	});
 
     function handleClick() {
+
         if (state == 1) {
             // Turn off
 
-            setState(0).then((result) => {
-                state = result;
+            setState('off').then((result) => {
+                if (result == "on") {
+                    state = 1;
+                } else if (result == "off") {
+                    state = 0;
+                } else {
+                    state = -1;
+                }
             });
         } else if (state == 0){
             // Turn on
 
-            setState(1).then((result) => {
-                state = result;
+            setState('on').then((result) => {
+                if (result == "on") {
+                    state = 1;
+                } else if (result == "off") {
+                    state = 0;
+                } else {
+                    state = -1;
+                }
             });
-        } else {
+        } else if (state == -1){
             // Error
 
             getState().then((result) => {
@@ -126,8 +134,6 @@
                 <img src={iconOn} alt="{name} On" class="w-16 h-16" />
             {:else if state == 0}
                 <img src={iconOff} alt="{name} Off" class="w-16 h-16" />
-            {:else if state == -2}
-                <img src={iconLoading} alt="{name} Loading" class="w-16 h-16" />
             {:else}
                 <img src="{iconError}" alt="{name} Error" class="w-16 h-16" />
             {/if}

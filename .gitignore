@@ -139,5 +139,4 @@ dist
 .pnp.*
 
 
-client_secret.json
-tokens.json
+.vscode
