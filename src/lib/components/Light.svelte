@@ -82,7 +82,7 @@
             getState().then((result) => {
                 state = result;
             });
-        }, 10000);
+        }, 1000);
 	});
 
     function handleClick() {
