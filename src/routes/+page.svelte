@@ -1,7 +1,7 @@
 <script>
     import Light from '$lib/components/Light.svelte';
 
-    import { browser } from '$app/env';
+    import { browser } from '$app/environment';
 
 
     let time, apm;
