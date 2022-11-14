@@ -20,8 +20,9 @@
 
     function getDoor() {
         return fetch(`${location.protocol}//${location.host}/api/switch`).then(res => {
-            data = res.json();
-            doorState = data.state;
+            res.json().then((data) => {
+                doorState = data.state;
+            });
         });
     }
 
