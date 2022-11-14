@@ -16,7 +16,7 @@
     let doorState;
 
     function getDoor() {
-        return fetch('/api/door').then(res => {
+        return fetch('/api/switch').then(res => {
             data = res.json();
             doorState = data.state;
         });
