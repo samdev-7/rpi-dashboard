@@ -1,22 +1,15 @@
-import { Gpio } from 'onoff';
-import { json } from '@sveltejs/kit';
+import gpio from 'rpi-gpio';
 
-const power = new Gpio(20, 'out');
-power.writeSync(1);
-
-const button = new Gpio(21, 'in', 'both');
-
-export function watchButton(callback) {
-    button.watch((err, value) => {    
-        callback(err, value);
-    });
-}
+gpio.setup(21, gpio.DIR_IN);
+gpio.setup(20, gpio.DIR_OUT, (err) => {
+    gpio.write(20, true);
+});
 
 export async function GET({ url }) {
-    let state = button.readSync();
-
-    return json({
-        error: false,
-        state: state
+    let state = gpio.read(2, (err, value) => {
+        return json({
+            error: false,
+            state: value
+        });
     });
 }
