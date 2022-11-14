@@ -19,7 +19,7 @@
     let doorState;
 
     function getDoor() {
-        return fetch(`${location.protocol}://${location.hostname}:${location.port}/api/switch`).then(res => {
+        return fetch(`${location.protocol}//${location.host}/api/switch`).then(res => {
             data = res.json();
             doorState = data.state;
         });
