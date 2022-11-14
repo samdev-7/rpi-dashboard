@@ -1,8 +1,8 @@
 <script>
     import Light from '$lib/components/Light.svelte';
 
-    import { env } from '$lib/env';
-    import { onMount } from "svelte";
+    import { browser } from '$app/env';
+
 
     let time, apm;
 
@@ -25,7 +25,7 @@
         });
     }
 
-    if (env == "browser") {
+    if (browser) {
         setInterval(getDoor, 1000);
     }
 
