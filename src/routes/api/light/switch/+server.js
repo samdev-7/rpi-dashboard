@@ -1,7 +1,8 @@
 import { Gpio } from 'onoff';
 import { json } from '@sveltejs/kit';
 
-new Gpio(20, 'out');
+const power = new Gpio(20, 'out');
+power.writeSync(1);
 
 const button = new Gpio(21, 'in', 'both');
 
