@@ -1,15 +1,18 @@
-import gpio from 'rpi-gpio';
+import { python } from 'pythonia'
 
-gpio.setup(21, gpio.DIR_IN);
-gpio.setup(20, gpio.DIR_OUT, (err) => {
-    gpio.write(20, true);
-});
+const gpio = await python('RPi.GPIO');
+
+await gpio.setmode(await gpio.BCM);;
+
+await gpio.setup$(20, await gpio.OUT, {initial: await gpio.HIGH})
+await gpio.setup(21, await gpio.IN);
 
 export async function GET({ url }) {
-    let state = gpio.read(2, (err, value) => {
-        return json({
-            error: false,
-            state: value
-        });
+
+    let state = await gpio.input(21);
+
+    return json({
+        error: false,
+        state: state
     });
 }
