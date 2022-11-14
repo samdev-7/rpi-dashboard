@@ -13,6 +13,17 @@
 
     getTime();
 
+    let doorState;
+
+    function getDoor() {
+        return fetch('/api/door').then(res => {
+            data = res.json();
+            doorState = data.state;
+        });
+    }
+
+    setInterval(getDoor, 1000);
+
 </script>
 
 <div class="text-center my-24">
@@ -23,3 +34,5 @@
     <Light name="Workspace Main" entity_id="light.workspace_main" />
     <Light name="Workspace Secondary" entity_id="switch.workspace_secondary" domain="switch" />
 </div>
+
+<h1>{doorState}</h1>
