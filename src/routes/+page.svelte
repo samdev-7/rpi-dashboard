@@ -1,8 +1,6 @@
 <script>
     import Light from '$lib/components/Light.svelte';
 
-    import { watchButton } from '$lib/api/rpi.js';
-
     let time, apm;
 
     function getTime() {
@@ -14,12 +12,6 @@
     setInterval(getTime, 1000);
 
     getTime();
-
-    let buttonvalue = 0;
-
-    watchButton((err, value) => {
-        buttonvalue = value;
-    });
 
 </script>
 
