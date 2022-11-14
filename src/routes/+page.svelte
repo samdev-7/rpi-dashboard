@@ -1,6 +1,9 @@
 <script>
     import Light from '$lib/components/Light.svelte';
 
+    import { env } from '$lib/env';
+    import { onMount } from "svelte";
+
     let time, apm;
 
     function getTime() {
@@ -16,13 +19,15 @@
     let doorState;
 
     function getDoor() {
-        return fetch('/api/switch').then(res => {
+        return fetch(`http://${location.hostname}/api/switch`).then(res => {
             data = res.json();
             doorState = data.state;
         });
     }
 
-    setInterval(getDoor, 1000);
+    if (env == "browser") {
+        setInterval(getDoor, 1000);
+    }
 
 </script>
 
