@@ -1,6 +1,8 @@
 <script>
     import Light from '$lib/components/Light.svelte';
 
+    import { watchButton } from '$lib/api/rpi.js';
+
     let time, apm;
 
     function getTime() {
@@ -12,6 +14,13 @@
     setInterval(getTime, 1000);
 
     getTime();
+
+    let buttonvalue = 0;
+
+    watchButton((err, value) => {
+        buttonvalue = value;
+    });
+
 </script>
 
 <div class="text-center my-24">
@@ -22,3 +31,5 @@
     <Light name="Workspace Main" entity_id="light.workspace_main" />
     <Light name="Workspace Secondary" entity_id="switch.workspace_secondary" domain="switch" />
 </div>
+
+<h>{buttonvalue}</h>
