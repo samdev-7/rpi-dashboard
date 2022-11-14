@@ -23,5 +23,3 @@
     <Light name="Workspace Main" entity_id="light.workspace_main" />
     <Light name="Workspace Secondary" entity_id="switch.workspace_secondary" domain="switch" />
 </div>
-
-<h>{buttonvalue}</h>
