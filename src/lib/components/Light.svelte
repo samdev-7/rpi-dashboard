@@ -11,7 +11,7 @@
     export let iconOn = "https://api.iconify.design/material-symbols:light-rounded.svg?color=%23fde68a";
     export let iconError = "https://api.iconify.design/material-symbols:light-outline-rounded.svg?color=%23f87171";
 
-    let state = -1; // 0 = off, 1 = on, -1 = error
+    export let state = -1; // 0 = off, 1 = on, -1 = error
     let bg_color, text_color, status_text;
 
     $: if (state == 0) {
@@ -72,6 +72,9 @@
         return s;
     }
 
+    export const light = {
+        setState
+    }
     
     onMount(() => {
 		getState().then((result) => {
@@ -90,27 +93,11 @@
         if (state == 1) {
             // Turn off
 
-            setState('off').then((result) => {
-                if (result == "on") {
-                    state = 1;
-                } else if (result == "off") {
-                    state = 0;
-                } else {
-                    state = -1;
-                }
-            });
+            setState('off');
         } else if (state == 0){
             // Turn on
 
-            setState('on').then((result) => {
-                if (result == "on") {
-                    state = 1;
-                } else if (result == "off") {
-                    state = 0;
-                } else {
-                    state = -1;
-                }
-            });
+            setState('on');
         } else if (state == -1){
             // Error
 

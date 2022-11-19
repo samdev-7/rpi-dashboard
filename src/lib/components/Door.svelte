@@ -1,35 +1,36 @@
 <script>
     import "../../app.css";
 
-    import { onMount } from "svelte";
 
-    export let name = "Light";
-    export let entity_id = name; 
-    export let domain = "light";
+   import { browser } from "$app/environment";
 
-    export let iconOff = "https://api.iconify.design/material-symbols:light-outline-rounded.svg?color=%23ffffff";
-    export let iconOn = "https://api.iconify.design/material-symbols:light-rounded.svg?color=%23fde68a";
-    export let iconError = "https://api.iconify.design/material-symbols:light-outline-rounded.svg?color=%23f87171";
+    export const name = "Door";
+    export const changeLights = () => {};
 
-    let state = -1; // 0 = off, 1 = on, -1 = error
+    export let iconOff = "https://api.iconify.design/material-symbols:door-front-outline-rounded.svg?color=%23ffffff";
+    export let iconOn = "https://api.iconify.design/material-symbols:door-open-outline-rounded.svg?color=%23ffffff";
+    export let iconError = "https://api.iconify.design/material-symbols:door-front-outline-rounded.svg?color=%23f87171";
+
+    export let state = -1; // 0 = closed, 1 = open, -1 = error
     let bg_color, text_color, status_text;
+    let doorOverride = false;
 
     $: if (state == 0) {
         bg_color = "bg-gray-400/25";
         text_color = "text-gray-100";
-        status_text = "Turned Off";
+        status_text = "Closed";
     } else if (state == 1) {
-        bg_color = "bg-yellow-400/25";
-        text_color = "text-yellow-100";
-        status_text = "Turned On";
+        bg_color = "bg-gray-400/25";
+        text_color = "text-gray-100";
+        status_text = "Opened";
     }  else {
         bg_color = "bg-red-400/25";
         text_color = "text-red-100";
-        status_text = "Error, click to refresh.";
+        status_text = "Error, refreshing...";
     }
 
-    async function getState() {
-        let response = await fetch("api/light?id=" + encodeURIComponent(entity_id));
+    async function getDoor() {
+        let response = fetch(`api/door`);
         if (!response.ok) {
             return -1;
         }
@@ -40,96 +41,28 @@
             return -1;
         }
 
-        if (data.state == "on") {
-            return 1;
-        } else if (data.state == "off") {
-            return 0;
+        if (data.state == 1 || data.state == 0) {
+            return state;
         } else {
             return -1;
         }
     }
 
-    async function setState(s) {
-        let response = await fetch("api/light", {
-            method: 'POST',
-            body: JSON.stringify({
-                id: entity_id,
-                state: s,
-                domain: domain
-            })
-        });
 
-        if (!response.ok) {
-            return -1;
-        }
-
-        let data = await response.json();
-
-        if (data.error == true) {
-            return null;
-        }
-
-        return s;
-    }
-
-    
-    onMount(() => {
-		getState().then((result) => {
-            state = result;
-        });
-
+    if (browser) {
         setInterval(() => {
-            getState().then((result) => {
-                state = result;
-            });
-        }, 10000);
-	});
-
-    function handleClick() {
-
-        if (state == 1) {
-            // Turn off
-
-            setState('off').then((result) => {
-                if (result == "on") {
-                    state = 1;
-                } else if (result == "off") {
-                    state = 0;
-                } else {
-                    state = -1;
-                }
-            });
-        } else if (state == 0){
-            // Turn on
-
-            setState('on').then((result) => {
-                if (result == "on") {
-                    state = 1;
-                } else if (result == "off") {
-                    state = 0;
-                } else {
-                    state = -1;
-                }
-            });
-        } else if (state == -1){
-            // Error
-
-            getState().then((result) => {
-                state = result;
-            });
-        }
+            state = getDoor();
+            if (!doorOverride && state != -1) {
+                changeLights(state);
+            }
+        }, 500);
     }
-
 
 </script>
 
-<button type="button" on:click={handleClick}>
-    <div class="rounded-2xl p-10 flex {bg_color}">
-        <div class="text-left {text_color}">
-            <h3 class="font-medium text-3xl">{name}</h3>
-            <p class="text-xl">{status_text}</p>
-        </div>
-        <div class="ml-auto">
+<div class="px-10 py-4 flex {bg_color}">
+    <div class="px-6 flex items-center">
+        <div>
             {#if state == 1}
                 <img src={iconOn} alt="{name} On" class="w-16 h-16" />
             {:else if state == 0}
@@ -137,6 +70,23 @@
             {:else}
                 <img src="{iconError}" alt="{name} Error" class="w-16 h-16" />
             {/if}
-        </div>  
+        </div>
+        <div class="text-left {text_color} ml-6">
+            <p class="text-2xl font-medium ">{status_text}</p>
+        </div>
     </div>
-</button>
+    <div class="ml-auto flex items-center mx-6 {text_color}">
+        <input type=checkbox id="door-override" class="hidden" bind:checked={doorOverride}>
+        <label for="door-override">
+            <div class="flex items-center">
+                <h class="text-xl">Override:</h>
+                <div class="relative ml-3">
+                    <div class="w-16 h-8 {doorOverride ? 'bg-red-500' : 'bg-gray-400'} rounded-full shadow-inner"></div>
+                    <div class="absolute w-8 h-8 bg-gray-100 rounded-full shadow inset-y-0 {doorOverride ? 'right-0' : 'left-0'}"></div>
+                </div>
+            </div>
+        </label>
+        
+        
+    </div>  
+</div>

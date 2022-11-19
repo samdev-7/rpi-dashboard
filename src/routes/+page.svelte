@@ -1,7 +1,6 @@
 <script>
     import Light from '$lib/components/Light.svelte';
-
-    import { browser } from '$app/environment';
+    import Door from '$lib/components/Door.svelte';
 
 
     let time, apm;
@@ -16,18 +15,25 @@
 
     getTime();
 
-    let doorState;
+    let mainLight, seconaryLight;
+    let mainState, secondaryState;
 
-    function getDoor() {
-        return fetch(`${location.protocol}//${location.host}/api/switch`).then(res => {
-            res.json().then((data) => {
-                doorState = data.state;
-            });
-        });
-    }
-
-    if (browser) {
-        setInterval(getDoor, 1000);
+    function changeLights(state) {
+        if (state == 0) {
+            if (mainState == 1) {
+                mainLight.setState('off');
+            }
+            if (secondaryState == 1) {
+                secondaryLight.setState('off');
+            }
+        } else if (state == 1) {
+            if (mainState == 0) {
+                mainLight.setState('on');
+            }
+            if (secondaryState == 0) {
+                secondaryLight.setState('on');
+            }
+        }
     }
 
 </script>
@@ -37,8 +43,10 @@
 </div>
 
 <div class="grid grid-cols-1 gap-6 px-10">
-    <Light name="Workspace Main" entity_id="light.workspace_main" />
-    <Light name="Workspace Secondary" entity_id="switch.workspace_secondary" domain="switch" />
+    <Light name="Workspace Main" entity_id="light.workspace_main" bind:light={mainLight} bind:state={mainState}/>
+    <Light name="Workspace Secondary" entity_id="switch.workspace_secondary" domain="switch" bind:light={seconaryLight} bind:state={secondaryState}/>
 </div>
 
-<h1>{doorState}</h1>
+<div class="w-screen absolute bottom-0">
+    <Door changeLights/>
+</div>
