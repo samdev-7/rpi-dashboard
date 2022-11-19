@@ -41,6 +41,8 @@
             return -1;
         }
 
+        return state;
+
         if (data.state == 1 || data.state == 0) {
             return state;
         } else {
@@ -51,7 +53,7 @@
 
     if (browser) {
         setInterval(() => {
-            state = getDoor();
+            getDoor().then((s) => {state = s});
             if (!doorOverride && state != -1) {
                 changeLights(state);
             }
