@@ -58,6 +58,14 @@
     async function setState(s) {
         fetching = true;
 
+        if (s == 'on') {
+            state = 1;
+        } else if (s == 'off') {
+            state = 0;
+        } else {
+            state = -1;
+        }
+
         let response = await fetch("api/light", {
             method: 'POST',
             body: JSON.stringify({
@@ -67,20 +75,19 @@
             })
         });
         
+        fetching = false;
 
         if (!response.ok) {
-            fetching = false;
+            
             return -1;
         }
 
         let data = await response.json();
 
         if (data.error == true) {
-            fetching = false;
             return null;
         }
 
-        fetching = false;
         return s;
     }
 
@@ -97,7 +104,7 @@
             getState().then((result) => {
                 state = result;
             });
-        }, 500);
+        }, 10000);
 	});
 
     function handleClick() {
