@@ -1,8 +1,10 @@
 import { python } from 'pythonia';
 import { json } from '@sveltejs/kit';
 
+let gpio;
+
 if (!process.env.NON_RPI) {
-    const gpio = await python('RPi.GPIO');
+    gpio = await python('RPi.GPIO');
 
     await gpio.setwarnings(false);
 
