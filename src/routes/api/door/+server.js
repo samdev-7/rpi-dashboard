@@ -1,7 +1,7 @@
 import { python } from 'pythonia';
 import { json } from '@sveltejs/kit';
 
-if (process.env.IS_RPI != undefined) {
+if (process.env.IS_RPI) {
     const gpio = await python('RPi.GPIO');
 
     await gpio.setmode(await gpio.BCM);;
@@ -12,7 +12,7 @@ if (process.env.IS_RPI != undefined) {
 
 async function GET({ url }) {
 
-    if (process.env.IS_RPI != undefined) {
+    if (process.env.IS_RPI) {
         let state = await gpio.input(21);
 
         return json({
