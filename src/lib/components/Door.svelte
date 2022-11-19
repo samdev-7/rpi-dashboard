@@ -41,6 +41,8 @@
             return -1;
         }
 
+        console.log(data);
+
         if (data.state == 1 || data.state == 0) {
             return data.state;
         } else {
