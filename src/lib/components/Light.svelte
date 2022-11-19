@@ -34,9 +34,7 @@
             return state;
         }
 
-        fetching = true;
         let response = await fetch("api/light?id=" + encodeURIComponent(entity_id));
-        fetching = false;
 
         if (!response.ok) {
             return -1;
@@ -58,6 +56,8 @@
     }
 
     async function setState(s) {
+        fetching = true;
+
         let response = await fetch("api/light", {
             method: 'POST',
             body: JSON.stringify({
@@ -66,17 +66,21 @@
                 domain: domain
             })
         });
+        
 
         if (!response.ok) {
+            fetching = false;
             return -1;
         }
 
         let data = await response.json();
 
         if (data.error == true) {
+            fetching = false;
             return null;
         }
 
+        fetching = false;
         return s;
     }
 
@@ -93,7 +97,7 @@
             getState().then((result) => {
                 state = result;
             });
-        }, 10000);
+        }, 500);
 	});
 
     function handleClick() {
@@ -101,11 +105,27 @@
         if (state == 1) {
             // Turn off
 
-            setState('off');
+            setState('off').then((result) => {
+                // if (result == "on") {
+                //     state = 1;
+                // } else if (result == "off") {
+                //     state = 0;
+                // } else {
+                //     state = -1;
+                // }
+            });
         } else if (state == 0){
             // Turn on
 
-            setState('on');
+            setState('on').then((result) => {
+                // if (result == "on") {
+                //     state = 1;
+                // } else if (result == "off") {
+                //     state = 0;
+                // } else {
+                //     state = -1;
+                // }
+            });
         } else if (state == -1){
             // Error
 
