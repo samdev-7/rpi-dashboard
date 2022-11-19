@@ -32,12 +32,14 @@
     async function getDoor() {
         let response = fetch(`api/door`);
         if (!response.ok) {
+            console.log("Error getting door state");
             return -1;
         }
 
         let data = await response.json();
 
         if (data.error == true) {
+            console.log("Door state error");
             return -1;
         }
 
