@@ -41,10 +41,8 @@
             return -1;
         }
 
-        return state;
-
         if (data.state == 1 || data.state == 0) {
-            return state;
+            return data.state;
         } else {
             return -1;
         }
