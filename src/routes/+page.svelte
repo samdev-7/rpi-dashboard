@@ -19,6 +19,7 @@
     let mainState, secondaryState;
 
     function changeLights(state) {
+        console.log("Changing lights to " + state);
         if (state == 0) {
             if (mainState == 1) {
                 mainLight.setState('off');
