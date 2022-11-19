@@ -81,8 +81,8 @@
             <div class="flex items-center">
                 <h class="text-xl">Override:</h>
                 <div class="relative ml-3">
-                    <div class="w-16 h-8 {doorOverride ? 'bg-red-500' : 'bg-gray-400'} rounded-full shadow-inner"></div>
-                    <div class="absolute w-8 h-8 bg-gray-100 rounded-full shadow inset-y-0 {doorOverride ? 'right-0' : 'left-0'}"></div>
+                    <div class="w-20 h-10 {doorOverride ? 'bg-red-500' : 'bg-gray-400'} rounded-full shadow-inner"></div>
+                    <div class="absolute w-10 h-10 bg-gray-100 rounded-full shadow inset-y-0 {doorOverride ? 'right-0' : 'left-0'}"></div>
                 </div>
             </div>
         </label>
