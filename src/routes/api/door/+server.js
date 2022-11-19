@@ -4,6 +4,8 @@ import { json } from '@sveltejs/kit';
 if (!process.env.NON_RPI) {
     const gpio = await python('RPi.GPIO');
 
+    await gpio.setwarnings(false);
+
     await gpio.setmode(await gpio.BCM);;
 
     await gpio.setup$(20, await gpio.OUT, {initial: await gpio.HIGH});
