@@ -53,7 +53,6 @@
         setInterval(() => {
             getDoor().then((s) => {state = s});
             if (!doorOverride && state != -1) {
-                console.log("Door state: " + state);
                 changeLights(state);
             }
         }, 500);

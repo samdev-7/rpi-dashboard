@@ -19,7 +19,6 @@
     let mainState, secondaryState;
 
     function changeLights(state) {
-        console.log("Changing lights to " + state);
         if (state == 0) {
             if (mainState == 1) {
                 mainLight.setState('off');
@@ -47,8 +46,6 @@
     <Light name="Workspace Main" entity_id="light.workspace_main" bind:light={mainLight} bind:state={mainState}/>
     <Light name="Workspace Secondary" entity_id="switch.workspace_secondary" domain="switch" bind:light={seconaryLight} bind:state={secondaryState}/>
 </div>
-
-{mainState}
 
 <div class="w-screen absolute bottom-0">
     <Door changeLights={changeLights}/>
