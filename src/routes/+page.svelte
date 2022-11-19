@@ -48,6 +48,8 @@
     <Light name="Workspace Secondary" entity_id="switch.workspace_secondary" domain="switch" bind:light={seconaryLight} bind:state={secondaryState}/>
 </div>
 
+{mainState}
+
 <div class="w-screen absolute bottom-0">
     <Door changeLights={changeLights}/>
 </div>
