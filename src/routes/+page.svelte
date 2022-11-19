@@ -15,7 +15,7 @@
 
     getTime();
 
-    let mainLight, seconaryLight;
+    let mainLight, secondaryLight;
     let mainState, secondaryState;
 
     function changeLights(state) {
@@ -44,7 +44,7 @@
 
 <div class="grid grid-cols-1 gap-6 px-10">
     <Light name="Workspace Main" entity_id="light.workspace_main" bind:light={mainLight} bind:state={mainState}/>
-    <Light name="Workspace Secondary" entity_id="switch.workspace_secondary" domain="switch" bind:light={seconaryLight} bind:state={secondaryState}/>
+    <Light name="Workspace Secondary" entity_id="switch.workspace_secondary" domain="switch" bind:light={secondaryLight} bind:state={secondaryState}/>
 </div>
 
 <div class="w-screen absolute bottom-0">
