@@ -13,6 +13,7 @@
 
     export let state = -1; // 0 = off, 1 = on, -1 = error
     let bg_color, text_color, status_text;
+    let fetching = false;
 
     $: if (state == 0) {
         bg_color = "bg-gray-400/25";
@@ -29,7 +30,14 @@
     }
 
     async function getState() {
+        if (fetching) {
+            return state;
+        }
+
+        fetching = true;
         let response = await fetch("api/light?id=" + encodeURIComponent(entity_id));
+        fetching = false;
+
         if (!response.ok) {
             return -1;
         }
