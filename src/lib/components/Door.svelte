@@ -5,7 +5,7 @@
    import { browser } from "$app/environment";
 
     export const name = "Door";
-    export const changeLights = () => {};
+    export const changeLights = (state) => {};
 
     export let iconOff = "https://api.iconify.design/material-symbols:door-front-outline-rounded.svg?color=%23ffffff";
     export let iconOn = "https://api.iconify.design/material-symbols:door-open-outline-rounded.svg?color=%23ffffff";

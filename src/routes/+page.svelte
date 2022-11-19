@@ -48,5 +48,5 @@
 </div>
 
 <div class="w-screen absolute bottom-0">
-    <Door changeLights/>
+    <Door changeLights={changeLights}/>
 </div>
