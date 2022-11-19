@@ -22,7 +22,8 @@ async function GET({ url }) {
     } else {
         return json({
             error: true,
-            state: false
+            state: false,
+            message: 'Not running on Raspberry Pi'
         });
     };
 }

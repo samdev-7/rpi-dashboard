@@ -41,10 +41,8 @@
             return -1;
         }
 
-        if (data.state == true) {
-            return 1;
-        } else if (data.state == false) {
-            return 0;
+        if (data.state == 1 || data.state == 0) {
+            return state;
         } else {
             return -1;
         }
