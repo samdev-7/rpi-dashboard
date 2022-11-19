@@ -17,23 +17,36 @@
 
     let mainLight, secondaryLight;
     let mainState, secondaryState;
+    let prevState;
+
+    function onDoorOpen() {
+        if (mainState == 0) {
+            mainLight.setState('on');
+        }
+        if (secondaryState == 0) {
+            secondaryLight.setState('on');
+        }
+    }
+
+    function onDoorClose() {
+        if (mainState == 1) {
+            mainLight.setState('off');
+        }
+        if (secondaryState == 1) {
+            secondaryLight.setState('off');
+        }
+    }
 
     function changeLights(state) {
-        if (state == 0) {
-            if (mainState == 1) {
-                mainLight.setState('off');
-            }
-            if (secondaryState == 1) {
-                secondaryLight.setState('off');
-            }
-        } else if (state == 1) {
-            if (mainState == 0) {
-                mainLight.setState('on');
-            }
-            if (secondaryState == 0) {
-                secondaryLight.setState('on');
+        if (state != prevState) {
+            if (state == 0) {
+                onDoorClose();
+            } else if (state == 1) {
+                onDoorOpen();
             }
         }
+
+        prevState = state;
     }
 
 </script>

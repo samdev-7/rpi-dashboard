@@ -55,7 +55,7 @@
             if (!doorOverride && state != -1) {
                 changeLights(state);
             }
-        }, 500);
+        }, 250);
     }
 
 </script>
