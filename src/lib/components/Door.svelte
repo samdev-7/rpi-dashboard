@@ -41,8 +41,6 @@
             return -1;
         }
 
-        console.log(data);
-
         if (data.state == 1 || data.state == 0) {
             return data.state;
         } else {
@@ -62,7 +60,6 @@
 
 </script>
 
-{state}
 <div class="px-10 py-4 flex {bg_color}">
     <div class="px-6 flex items-center">
         <div>
