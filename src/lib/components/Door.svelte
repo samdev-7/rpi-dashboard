@@ -62,6 +62,7 @@
 
 </script>
 
+{state}
 <div class="px-10 py-4 flex {bg_color}">
     <div class="px-6 flex items-center">
         <div>
@@ -88,7 +89,5 @@
                 </div>
             </div>
         </label>
-        
-        
     </div>  
 </div>
